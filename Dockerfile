@@ -10,6 +10,16 @@ RUN CGO_ENABLED=0 go build -ldflags="-w -s" -o /go/bin/wol
 
 FROM scratch
 
+ARG BUILD_DATE
+ARG VERSION
+
+LABEL maintainer="github.com/fopina"
+LABEL org.label-schema.schema-version="1.0"
+LABEL org.label-schema.build-date=$BUILD_DATE
+LABEL org.label-schema.vcs-url="https://github.com/fopina/docker-wakeonlan"
+LABEL org.label-schema.name="fopina/wakeonlan"
+LABEL org.label-schema.version=$BUILD_VERSION
+
 COPY --from=builder /go/bin/wol /wol
 
 # set USER env so wol doesn't try to use cgo
