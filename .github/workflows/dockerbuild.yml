@@ -1,0 +1,33 @@
+name: publish to dockerhub
+
+on:
+    push:
+      branches:
+      - master
+
+jobs:
+  build:
+    name: publish to dockerhub
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: set up buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
+
+      - name: login to dockerhub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: build (and publish) image
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64,linux/arm/v7 \
+            --push \
+            --build-arg VERSION=1.1.2-1 \
+            -t fopina/wakeonlan:1.1.2 \
+            -t fopina/wakeonlan:1.1.2.1 \
+            -t fopina/wakeonlan:latest \
+            .
