@@ -2,8 +2,11 @@ FROM golang:1.14-alpine as builder
 
 RUN apk add --no-cache git
 
-RUN CGO_ENABLED=0 go get -ldflags="-w -s" github.com/sabhiram/go-wol/cmd/wol
+RUN go get -d github.com/sabhiram/go-wol/cmd/wol
 
+WORKDIR /go/src/github.com/sabhiram/go-wol/cmd/wol
+RUN git checkout 1f746af28fd49f3542483a40f7e19828e4228dbb
+RUN CGO_ENABLED=0 go build -ldflags="-w -s" -o /go/bin/wol
 
 FROM scratch
 
