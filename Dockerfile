@@ -11,7 +11,7 @@ RUN CGO_ENABLED=0 go build -ldflags="-w -s" -o /go/bin/wol
 FROM scratch
 
 ARG BUILD_DATE
-ARG VERSION
+ARG BUILD_VERSION
 
 LABEL maintainer="github.com/fopina"
 LABEL org.label-schema.schema-version="1.0"
